@@ -1,7 +1,8 @@
 package com.pluralsight.calcengine;
 
 public class PowerOf implements MathProcessing {
-    private String formattedOutput;    @Override
+    private String formattedOutput;
+    @Override
     public String getKeyWord() {
         return "power";
     }
