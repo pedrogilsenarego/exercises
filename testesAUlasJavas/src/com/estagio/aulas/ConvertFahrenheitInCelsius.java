@@ -16,6 +16,7 @@ public class ConvertFahrenheitInCelsius {
         System.out.print(temperature + "º na escala Fahrenheit são ");
         scanner.close();
         return temperature;
+        //teste
     }
     private static float convert(String tempF) {
         Float floatOfVal = Float.valueOf(tempF).floatValue();
