@@ -7,20 +7,18 @@ public class ConvertFahrenheitInCelsius {
         String tempF = acceptF();
         float tempF1 = convert(tempF);
         String strFormat = String.format("%.1f", tempF1);
-        System.out.println(strFormat + "º em na escala Célsius");
+        System.out.println(strFormat + "ºCelsius");
     }
     static String acceptF() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Introduza a temperatura em º Fahrenheit");
+        System.out.println("Introduce the temperature in ºFahrenheit");
         String temperature = scanner.nextLine();
-        System.out.print(temperature + "º na escala Fahrenheit são ");
+        System.out.print(temperature + "ºFahrenheit are ");
         scanner.close();
         return temperature;
-        //teste
     }
     private static float convert(String tempF) {
-        Float floatOfVal = Float.valueOf(tempF).floatValue();
-        float tempC = (floatOfVal - 32f) * (5f/9f) ;
-        return tempC;
+        float finalVal = Float.parseFloat(tempF);
+        return (finalVal - 32f) * (5f/9f);
     }
 }
