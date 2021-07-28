@@ -1,4 +1,4 @@
-package apps;
+package com.pedro.apps;
 
 import ds.BasicHashTable;
 
