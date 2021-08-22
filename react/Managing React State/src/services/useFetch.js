@@ -10,23 +10,21 @@ export default function useFetch(url) {
   useEffect(() => {
     async function init() {
       try {
-       const response = await fetch(baseUrl + url)
-       if (response.ok) {
-           const json = await response.json();
-           setData(json);
-       } else {
-           throw response;
-       }
-
+        const response = await fetch(baseUrl + url);
+        if (response.ok) {
+          const json = await response.json();
+          setData(json);
+        } else {
+          throw response;
+        }
       } catch (e) {
-      setError(e);
+        setError(e);
       } finally {
-      setLoading(false);
+        setLoading(false);
       }
     }
     init();
   }, [url]);
 
-  return {data, error, loading}
-
+  return { data, error, loading };
 }
