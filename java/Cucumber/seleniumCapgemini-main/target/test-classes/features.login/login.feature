@@ -1,9 +1,9 @@
 Feature: login
 
-  Scenario: logging in sucess
+  Scenario Outline: logging in sucess
     Given I have a login screen
-    When I write NISS 12031875008
-    And I write password Ines26042001#
+    When I write NISS <NISS>
+    And I write password <PASSWORD>
     Then I should see a new screen
     And I click on Pensões
     And I click on Pensão de Velhice
@@ -13,10 +13,14 @@ Feature: login
     And I select the date 23/11/2020
     Then I should get an error message
 
-  Scenario: logging in sucess
+    Examples:
+      | NISS | PASSWORD |
+      | 12042247770 | FML1987!Fdx |
+
+  Scenario Outline: logging in sucess
     Given I have a login screen
-    When I write NISS 12031875008
-    And I write password Ines26042001#
+    When I write NISS <NISS>
+    And I write password <PASSWORD>
     Then I should see a new screen
     And I click on Pensões
     And I click on Pensão de Velhice
@@ -26,11 +30,14 @@ Feature: login
     And I select the date 23/11/2032
     Then I should get aditional information
     And I click in salarios
-    And I add 20000€ to the year 2021
+    And I add <SALARIO>€ to the year <ANO>
+
+    Examples:
+      | NISS | PASSWORD | SALARIO | ANO  |
+      | 12042247770 | FML1987!Fdx | 20000   | 2021 |
 
   Scenario: logging in
     Given I have a login screen
     When I write NISS 123
     And I write password password
     Then I should see an error message
-
