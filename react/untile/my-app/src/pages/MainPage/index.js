@@ -281,6 +281,7 @@ const MainPage = () => {
 							<FormControl>
 								<InputLabel id="target market">Market</InputLabel>
 								<Select
+									disabled={handleDisableMarket()}
 									labelId="target market"
 									id="target market"
 									value={market}
