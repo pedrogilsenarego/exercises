@@ -129,7 +129,10 @@ const MainPage = () => {
 		dispatch(clearConversionsStart());
 	};
 
-	const data = [{ name: "test1" }, { name: "test2" }];
+	const handleDisableMarket = () => {
+		if (selectedCoin === "") return true;
+		else return false;
+	};
 
 	return (
 		<div>
@@ -253,7 +256,9 @@ const MainPage = () => {
 								>
 									{coins &&
 										coins.map((d) => (
-											<MenuItem key={d.name}>{d.name}</MenuItem>
+											<MenuItem key={d.name} value={d.name}>
+												{d.name}
+											</MenuItem>
 										))}
 								</Select>
 							</FormControl>
@@ -262,6 +267,7 @@ const MainPage = () => {
 							<FormControl>
 								<InputLabel id="target market">Market</InputLabel>
 								<Select
+									disabled={handleDisableMarket()}
 									labelId="target market"
 									id="target market"
 									value={market}
@@ -281,6 +287,7 @@ const MainPage = () => {
 						</Grid>
 					</Grid>
 				</Box>
+				{selectedCoin}
 			</Container>
 		</div>
 	);
