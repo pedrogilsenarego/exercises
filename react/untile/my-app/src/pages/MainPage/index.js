@@ -40,8 +40,8 @@ const MainPage = () => {
 				`https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${selectedCurrency},${targetCurrency}`
 			);
 
-			const data = response.data.bitcoin.eth;
-			const data2 = response.data.bitcoin.btc;
+			const data = response.data.bitcoin[selectedCurrency];
+			const data2 = response.data.bitcoin[targetCurrency];
 
 			setRate(data2 / data);
 		} catch (error) {
@@ -146,8 +146,9 @@ const MainPage = () => {
 								value={initialInput * rate}
 							></TextField>
 						</Grid>
-						<Button onClick={() => getRate()}>Get Rate</Button>
-						{selectedCurrency} {targetCurrency} {rate} {initialInput}
+						<Grid item xs={12}>
+							<Button onClick={() => getRate()}>Set Rate</Button>
+						</Grid>
 					</Grid>
 				</Box>
 				<Box style={{ backgroundColor: "lightGrey", marginTop: "10vh" }}>
