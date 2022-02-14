@@ -533,15 +533,31 @@ const MainPage = () => {
 															<Typography style={{ fontWeight: "600" }}>
 																{item.base}/{item.target}{" "}
 																<Typography style={{ fontSize: "12px" }}>
-																	Last value:{item.last} Last Traded at:{" "}
-																	{item.last_traded_at}
+																	<b>Last value: </b>
+																	{item.last}
+																	{item.target}
+																</Typography>{" "}
+																<Typography style={{ fontSize: "12px" }}>
+																	<b>Last Traded at: </b> {item.last_traded_at}
 																</Typography>{" "}
 															</Typography>
 														</Grid>
 														<Grid item xs={6}>
-															<Typography>View More</Typography>
-															<Typography>
-																Market: {item.market.name} Market volume:
+															<Typography
+																style={{
+																	cursor: "pointer",
+																	color: "darkBlue",
+																	textDecorationLine: "underline"
+																}}
+															>
+																View More
+															</Typography>
+															<Typography style={{ fontSize: "12px" }}>
+																<b>Market: </b>
+																{item.market.name}
+															</Typography>
+															<Typography style={{ fontSize: "12px" }}>
+																<b>Market volume: </b>
 																{item.volume}
 															</Typography>
 														</Grid>
