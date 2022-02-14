@@ -8,21 +8,32 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+
+import { addConversionStart } from "../../redux/Conversions/conversions.actions";
 import Button from "@mui/material/Button";
+
+const mapState = (state) => ({
+	conversion: state.conversionData.conversion
+});
 
 const SUPPORTED_CURRENCIES =
 	"https://api.coingecko.com/api/v3/simple/supported_vs_currencies";
 
 const MainPage = () => {
+	const { conversion } = useSelector(mapState);
 	const [supportedCurrencies, setSupportedCurrencies] = useState([]);
 	const [selectedCurrency, setSelectedCurrency] = useState("");
 	const [selectedCurrency2, setSelectedCurrency2] = useState("");
 	const [targetCurrency, setTargetCurrency] = useState("");
 	const [market, setMarket] = useState("");
 	const [marketData, setMarketData] = useState([]);
-	const [rate, setRate] = useState(2);
+	const [rate, setRate] = useState(0);
 	const [initialInput, setInitialInput] = useState("");
+
+	const dispatch = useDispatch();
 
 	const getData = async () => {
 		try {
@@ -79,6 +90,19 @@ const MainPage = () => {
 
 	const handleMarket = (event) => {
 		setMarket(event.target.value);
+	};
+
+	const handleSaveConversion = () => {
+		const configConversion = {
+			initialCurrency: selectedCurrency,
+			secondaryCurrency: targetCurrency,
+			rate: rate,
+			initialValue: initialInput,
+			finalValue: initialInput * rate
+		};
+		const initialState = conversion;
+		initialState.push(configConversion);
+		dispatch(addConversionStart(initialState));
 	};
 
 	return (
@@ -147,11 +171,32 @@ const MainPage = () => {
 							></TextField>
 						</Grid>
 						<Grid item xs={12}>
-							<Button onClick={() => getRate()}>Set Rate</Button>
+							<ButtonGroup>
+								<Button onClick={() => getRate()}>Convert</Button>
+								<Button onClick={() => handleSaveConversion()}>
+									Save Conversion
+								</Button>
+							</ButtonGroup>
 						</Grid>
 					</Grid>
+
+					{conversion.map((item, pos) => {
+						return (
+							<Typography key={pos}>
+								{pos + 1}: {item.initialValue} of {item.initialCurrency}{" "}
+								converts to {item.finalValue} of {item.secondaryCurrency}
+							</Typography>
+						);
+					})}
 				</Box>
-				<Box style={{ backgroundColor: "lightGrey", marginTop: "10vh" }}>
+
+				<Box
+					style={{
+						backgroundColor: "lightGrey",
+						marginTop: "10vh",
+						minHeight: "50vh"
+					}}
+				>
 					<Typography>Explore here the market</Typography>
 					<Grid container spacing={2} style={{ marginTop: "10vh" }}>
 						{" "}
@@ -200,6 +245,7 @@ const MainPage = () => {
 					</Grid>
 				</Box>
 				{selectedCurrency2}
+				{conversion.teste}
 				{marketData.map((item, pos) => {
 					return <Typography>ola</Typography>;
 				})}
