@@ -135,84 +135,94 @@ const MainPage = () => {
 				<Box style={{ backgroundColor: "lightGrey", marginTop: "10vh" }}>
 					<Typography>Insert here the value you want to convert</Typography>
 					<Grid container spacing={2} style={{ marginTop: "10vh" }}>
-						<Grid item xs={6}>
-							<FormControl>
-								<InputLabel id="initial currency">Currency</InputLabel>
-								<Select
-									labelId="initial currency"
-									id="initial currency"
-									value={selectedCurrency}
-									label="Currency pretended"
-									onChange={handleChangeCurrency}
-									style={{ minWidth: "200px" }}
-								>
-									{supportedCurrencies.map((item, pos) => {
-										return (
-											<MenuItem key={pos} value={item}>
-												{item}
-											</MenuItem>
-										);
-									})}
-								</Select>
-							</FormControl>
+						<Grid item container xs={6}>
+							<Grid item xs={6}>
+								<FormControl>
+									<InputLabel id="initial currency">Currency</InputLabel>
+									<Select
+										labelId="initial currency"
+										id="initial currency"
+										value={selectedCurrency}
+										label="Currency pretended"
+										onChange={handleChangeCurrency}
+										style={{ minWidth: "200px" }}
+									>
+										{supportedCurrencies.map((item, pos) => {
+											return (
+												<MenuItem key={pos} value={item}>
+													{item}
+												</MenuItem>
+											);
+										})}
+									</Select>
+								</FormControl>
+							</Grid>
+							<Grid item xs={6}>
+								<TextField
+									placeholder="Initial value"
+									value={initialInput}
+									onChange={(e) => setInitialInput(e.target.value)}
+								></TextField>
+							</Grid>
+							<Grid item xs={6} style={{ marginTop: "20px" }}>
+								<FormControl>
+									<InputLabel id="target currency">Currency</InputLabel>
+									<Select
+										labelId="target currency"
+										id="target currency"
+										value={targetCurrency}
+										label="Currency pretended"
+										onChange={handleTargetCurrency}
+										style={{ minWidth: "200px" }}
+									>
+										{supportedCurrencies.map((item, pos) => {
+											return (
+												<MenuItem key={pos} value={item}>
+													{item}
+												</MenuItem>
+											);
+										})}
+									</Select>
+								</FormControl>
+							</Grid>
+							<Grid item xs={6} style={{ marginTop: "20px" }}>
+								<TextField
+									disabled={true}
+									placeholder="Final value"
+									value={initialInput * rate}
+								></TextField>
+							</Grid>
+							<Grid
+								item
+								xs={12}
+								style={{ marginTop: "20px", marginBottom: "20px" }}
+							>
+								<ButtonGroup>
+									<Button onClick={() => handleDoConversion()}>Convert</Button>
+									<Button onClick={() => handleSaveConversion()}>
+										Save Conversion
+									</Button>
+									<Button onClick={() => handleClearConversions()}>
+										Clear conversions
+									</Button>
+								</ButtonGroup>
+								{warning}
+							</Grid>
 						</Grid>
 						<Grid item xs={6}>
-							<TextField
-								placeholder="Initial value"
-								value={initialInput}
-								onChange={(e) => setInitialInput(e.target.value)}
-							></TextField>
-						</Grid>
-						<Grid item xs={6}>
-							<FormControl>
-								<InputLabel id="target currency">Currency</InputLabel>
-								<Select
-									labelId="target currency"
-									id="target currency"
-									value={targetCurrency}
-									label="Currency pretended"
-									onChange={handleTargetCurrency}
-									style={{ minWidth: "200px" }}
-								>
-									{supportedCurrencies.map((item, pos) => {
-										return (
-											<MenuItem key={pos} value={item}>
-												{item}
-											</MenuItem>
-										);
-									})}
-								</Select>
-							</FormControl>
-						</Grid>
-						<Grid item xs={6}>
-							<TextField
-								disabled={true}
-								placeholder="Final value"
-								value={initialInput * rate}
-							></TextField>
-						</Grid>
-						<Grid item xs={12}>
-							<ButtonGroup>
-								<Button onClick={() => handleDoConversion()}>Convert</Button>
-								<Button onClick={() => handleSaveConversion()}>
-									Save Conversion
-								</Button>
-								<Button onClick={() => handleClearConversions()}>
-									Clear conversions
-								</Button>
-							</ButtonGroup>
-							{warning}
+							<Typography>List of Conversions done</Typography>
+							<div style={{ marginTop: "20px" }}>
+								{conversion.map((item, pos) => {
+									return (
+										<Typography key={pos}>
+											{pos + 1}: {item.initialValue} of {item.initialCurrency}{" "}
+											converts to {item.finalValue} of {item.secondaryCurrency}
+										</Typography>
+									);
+								})}
+							</div>
 						</Grid>
 					</Grid>
-
-					{conversion.map((item, pos) => {
-						return (
-							<Typography key={pos}>
-								{pos + 1}: {item.initialValue} of {item.initialCurrency}{" "}
-								converts to {item.finalValue} of {item.secondaryCurrency}
-							</Typography>
-						);
-					})}
 				</Box>
 
 				<Box
