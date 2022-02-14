@@ -314,17 +314,22 @@ const MainPage = () => {
 							</FormControl>
 						</Grid>
 					</Grid>
+					<Grid item xs={12} style={{ marginTop: "20px" }}>
+						{tickers.tickers &&
+							tickers.tickers.map((item, pos) => {
+								if (item.market.name === "FMFW.io") {
+									return (
+										<Typography key={pos}>
+											Ticker:{item.base} Last value:{item.last} Last Traded at:{" "}
+											{item.last_traded_at} Market: {item.market.name} Market
+											volume:
+											{item.volume}
+										</Typography>
+									);
+								} else return null;
+							})}
+					</Grid>
 				</Box>
-				{tickers.tickers &&
-					tickers.tickers.map((item, pos) => {
-						return (
-							<Typography key={pos}>
-								Ticker:{item.base} Last value:{item.last} Last Traded at:{" "}
-								{item.last_traded_at} Market: {item.market.name} Market volume:
-								{item.volume}
-							</Typography>
-						);
-					})}
 			</Container>
 		</div>
 	);
