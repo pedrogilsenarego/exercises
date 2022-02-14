@@ -11,6 +11,11 @@ const conversionReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				conversion: action.payload
 			};
+		case conversionTypes.CLEAR_CONVERSIONS:
+			return {
+				...state,
+				...INITIAL_STATE
+			};
 
 		default:
 			return state;

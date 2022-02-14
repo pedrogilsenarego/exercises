@@ -12,7 +12,10 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addConversionStart } from "../../redux/Conversions/conversions.actions";
+import {
+	addConversionStart,
+	clearConversionsStart
+} from "../../redux/Conversions/conversions.actions";
 import Button from "@mui/material/Button";
 
 const mapState = (state) => ({
@@ -29,6 +32,7 @@ const MainPage = () => {
 	const [selectedCurrency2, setSelectedCurrency2] = useState("");
 	const [targetCurrency, setTargetCurrency] = useState("");
 	const [market, setMarket] = useState("");
+	const [warning, setWarning] = useState("");
 	const [marketData, setMarketData] = useState([]);
 	const [rate, setRate] = useState(0);
 	const [initialInput, setInitialInput] = useState("");
@@ -92,6 +96,19 @@ const MainPage = () => {
 		setMarket(event.target.value);
 	};
 
+	const handleDoConversion = () => {
+		if (selectedCurrency === "" || targetCurrency === "") {
+			setWarning("select currencies first");
+			return;
+		}
+		if (isNaN(initialInput)) {
+			setWarning("use only numbers to convert");
+			return;
+		}
+		getRate();
+		setWarning("");
+	};
+
 	const handleSaveConversion = () => {
 		const configConversion = {
 			initialCurrency: selectedCurrency,
@@ -103,6 +120,10 @@ const MainPage = () => {
 		const initialState = conversion;
 		initialState.push(configConversion);
 		dispatch(addConversionStart(initialState));
+	};
+
+	const handleClearConversions = () => {
+		dispatch(clearConversionsStart());
 	};
 
 	return (
@@ -172,11 +193,15 @@ const MainPage = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<ButtonGroup>
-								<Button onClick={() => getRate()}>Convert</Button>
+								<Button onClick={() => handleDoConversion()}>Convert</Button>
 								<Button onClick={() => handleSaveConversion()}>
 									Save Conversion
 								</Button>
+								<Button onClick={() => handleClearConversions()}>
+									Clear conversions
+								</Button>
 							</ButtonGroup>
+							{warning}
 						</Grid>
 					</Grid>
 
