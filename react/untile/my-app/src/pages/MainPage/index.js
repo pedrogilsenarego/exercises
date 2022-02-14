@@ -36,7 +36,7 @@ const MainPage = () => {
 	const [warning, setWarning] = useState("");
 	const [coins, setCoins] = useState("");
 	const [selectedCoin, setSelectedCoin] = useState("");
-
+	const [tickers, setTickers] = useState("0");
 	const [rate, setRate] = useState(0);
 	const [initialInput, setInitialInput] = useState("");
 
@@ -70,7 +70,7 @@ const MainPage = () => {
 	const getMarketInfo = async () => {
 		try {
 			const response = await axios.get(
-				`https://api.coingecko.com/api/v3/coins/${selectedCoin}/tickers`
+				`https://api.coingecko.com/api/v3/coins/cardano/tickers`
 			);
 			const data = response.data;
 			setMarket(data);
@@ -91,10 +91,23 @@ const MainPage = () => {
 		}
 	};
 
+	const getTickers = async () => {
+		try {
+			const response = await axios.get(
+				`https://api.coingecko.com/api/v3/coins/cardano/tickers`
+			);
+			const data = response.data;
+			setTickers(data);
+		} catch (error) {
+			console.error();
+		}
+	};
+
 	useEffect(() => {
 		getData();
 		getMarketInfo();
 		getCoins();
+		getTickers();
 	}, []);
 
 	const handleChangeCurrency = (event) => {
@@ -302,6 +315,16 @@ const MainPage = () => {
 						</Grid>
 					</Grid>
 				</Box>
+				{tickers.tickers &&
+					tickers.tickers.map((item, pos) => {
+						return (
+							<Typography key={pos}>
+								Ticker:{item.base} Last value:{item.last} Last Traded at:{" "}
+								{item.last_traded_at} Market: {item.market.name} Market volume:
+								{item.volume}
+							</Typography>
+						);
+					})}
 			</Container>
 		</div>
 	);
