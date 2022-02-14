@@ -16,7 +16,9 @@ const SUPPORTED_CURRENCIES =
 const MainPage = () => {
 	const [supportedCurrencies, setSupportedCurrencies] = useState([]);
 	const [selectedCurrency, setSelectedCurrency] = useState("");
+	const [selectedCurrency2, setSelectedCurrency2] = useState("");
 	const [targetCurrency, setTargetCurrency] = useState("");
+	const [market, setMarket] = useState("");
 	const [rate, setRate] = useState(2);
 	const [initialInput, setInitialInput] = useState("");
 
@@ -62,6 +64,14 @@ const MainPage = () => {
 		}
 	};
 
+	const handleSelectedCurrency2 = (event) => {
+		setSelectedCurrency2(event.target.value);
+	};
+
+	const handleMarket = (event) => {
+		setMarket(event.target.value);
+	};
+
 	return (
 		<div>
 			<Container style={{ backgroundColor: "lightblue", marginTop: "10vh" }}>
@@ -72,7 +82,7 @@ const MainPage = () => {
 					<Typography>Insert here the value you want to convert</Typography>
 					<Grid container spacing={2} style={{ marginTop: "10vh" }}>
 						<Grid item xs={6}>
-							<FormControl fullWidth>
+							<FormControl>
 								<InputLabel id="initial currency">Currency</InputLabel>
 								<Select
 									labelId="initial currency"
@@ -80,6 +90,7 @@ const MainPage = () => {
 									value={selectedCurrency}
 									label="Currency pretended"
 									onChange={handleChangeCurrency}
+									style={{ minWidth: "200px" }}
 								>
 									{supportedCurrencies.map((item, pos) => {
 										return (
@@ -99,7 +110,7 @@ const MainPage = () => {
 							></TextField>
 						</Grid>
 						<Grid item xs={6}>
-							<FormControl fullWidth>
+							<FormControl>
 								<InputLabel id="target currency">Currency</InputLabel>
 								<Select
 									labelId="target currency"
@@ -107,6 +118,7 @@ const MainPage = () => {
 									value={targetCurrency}
 									label="Currency pretended"
 									onChange={handleTargetCurrency}
+									style={{ minWidth: "200px" }}
 								>
 									{supportedCurrencies.map((item, pos) => {
 										return (
@@ -120,6 +132,7 @@ const MainPage = () => {
 						</Grid>
 						<Grid item xs={6}>
 							<TextField
+								disabled={true}
 								placeholder="Final value"
 								value={initialInput * rate}
 							></TextField>
@@ -127,6 +140,55 @@ const MainPage = () => {
 						{selectedCurrency} {targetCurrency} {rate} {initialInput}
 					</Grid>
 				</Box>
+				<Box style={{ backgroundColor: "lightGrey", marginTop: "10vh" }}>
+					<Typography>Explore here the market</Typography>
+					<Grid container spacing={2} style={{ marginTop: "10vh" }}>
+						{" "}
+						<Grid item xs={6}>
+							<FormControl>
+								<InputLabel id="target currency2">Currency</InputLabel>
+								<Select
+									labelId="target currency2"
+									id="target currency"
+									value={selectedCurrency2}
+									label="Currency pretended"
+									onChange={handleSelectedCurrency2}
+									style={{ minWidth: "200px" }}
+								>
+									{supportedCurrencies.map((item, pos) => {
+										return (
+											<MenuItem key={pos} value={item}>
+												{item}
+											</MenuItem>
+										);
+									})}
+								</Select>
+							</FormControl>
+						</Grid>
+						<Grid item xs={6}>
+							<FormControl>
+								<InputLabel id="target market">Market</InputLabel>
+								<Select
+									labelId="target market"
+									id="target market"
+									value={market}
+									label="Market pretended"
+									onChange={handleMarket}
+									style={{ minWidth: "200px" }}
+								>
+									{supportedCurrencies.map((item, pos) => {
+										return (
+											<MenuItem key={pos} value={item}>
+												{item}
+											</MenuItem>
+										);
+									})}
+								</Select>
+							</FormControl>
+						</Grid>
+					</Grid>
+				</Box>
+				{selectedCurrency2}
 			</Container>
 		</div>
 	);
