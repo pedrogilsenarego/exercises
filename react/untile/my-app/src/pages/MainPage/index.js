@@ -29,11 +29,13 @@ const MainPage = () => {
 	const { conversion } = useSelector(mapState);
 	const [supportedCurrencies, setSupportedCurrencies] = useState([]);
 	const [selectedCurrency, setSelectedCurrency] = useState("");
-	const [selectedCurrency2, setSelectedCurrency2] = useState("");
+
 	const [targetCurrency, setTargetCurrency] = useState("");
 	const [market, setMarket] = useState("");
 	const [warning, setWarning] = useState("");
-	const [marketData, setMarketData] = useState([]);
+	const [coins, setCoins] = useState("");
+	const [selectedCoin, setSelectedCoin] = useState("");
+
 	const [rate, setRate] = useState(0);
 	const [initialInput, setInitialInput] = useState("");
 
@@ -64,12 +66,13 @@ const MainPage = () => {
 		}
 	};
 
-	const getMarketInfo = async () => {
+	const getCoinInfo = async () => {
 		try {
 			const response = await axios.get(
-				`https://api.coingecko.com/api/v3/coins/bitcoin/tickers`
+				`https://api.coingecko.com/api/v3/coins/list`
 			);
-			const data = response.data;
+			const data = response.data.slice(0, 20);
+			setCoins(data);
 		} catch (error) {
 			console.error();
 		}
@@ -77,7 +80,7 @@ const MainPage = () => {
 
 	useEffect(() => {
 		getData();
-		//getMarketInfo();
+		getCoinInfo();
 	}, []);
 
 	const handleChangeCurrency = (event) => {
@@ -88,8 +91,8 @@ const MainPage = () => {
 		setTargetCurrency(event.target.value);
 	};
 
-	const handleSelectedCurrency2 = (event) => {
-		setSelectedCurrency2(event.target.value);
+	const handleSelectCoins = (event) => {
+		setSelectedCoin(event.target.value);
 	};
 
 	const handleMarket = (event) => {
@@ -101,7 +104,7 @@ const MainPage = () => {
 			setWarning("select currencies first");
 			return;
 		}
-		if (isNaN(initialInput)) {
+		if (isNaN(initialInput) && initialInput !== "") {
 			setWarning("use only numbers to convert");
 			return;
 		}
@@ -126,6 +129,8 @@ const MainPage = () => {
 		dispatch(clearConversionsStart());
 	};
 
+	const data = [{ name: "test1" }, { name: "test2" }];
+
 	return (
 		<div>
 			<Container style={{ backgroundColor: "lightblue", marginTop: "10vh" }}>
@@ -133,7 +138,7 @@ const MainPage = () => {
 					Welcome to the Crypto CUrrency Converter
 				</Box>
 				<Box style={{ backgroundColor: "lightGrey", marginTop: "10vh" }}>
-					<Typography>Insert here the value you want to convert</Typography>
+					<Typography>Convert here any currency</Typography>
 					<Grid container spacing={2} style={{ marginTop: "10vh" }}>
 						<Grid item container xs={6}>
 							<Grid item xs={6}>
@@ -237,22 +242,19 @@ const MainPage = () => {
 						{" "}
 						<Grid item xs={6}>
 							<FormControl>
-								<InputLabel id="target currency2">Currency</InputLabel>
+								<InputLabel id="target coins">Coins</InputLabel>
 								<Select
-									labelId="target currency2"
-									id="target currency"
-									value={selectedCurrency2}
+									labelId="target coins"
+									id="target coins"
+									value={selectedCoin}
 									label="Currency pretended"
-									onChange={handleSelectedCurrency2}
+									onChange={handleSelectCoins}
 									style={{ minWidth: "200px" }}
 								>
-									{supportedCurrencies.map((item, pos) => {
-										return (
-											<MenuItem key={pos} value={item}>
-												{item}
-											</MenuItem>
-										);
-									})}
+									{coins &&
+										coins.map((d) => (
+											<MenuItem key={d.name}>{d.name}</MenuItem>
+										))}
 								</Select>
 							</FormControl>
 						</Grid>
@@ -279,11 +281,6 @@ const MainPage = () => {
 						</Grid>
 					</Grid>
 				</Box>
-				{selectedCurrency2}
-				{conversion.teste}
-				{marketData.map((item, pos) => {
-					return <Typography>ola</Typography>;
-				})}
 			</Container>
 		</div>
 	);
