@@ -9,6 +9,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import axios from "axios";
+import Button from "@mui/material/Button";
 
 const SUPPORTED_CURRENCIES =
 	"https://api.coingecko.com/api/v3/simple/supported_vs_currencies";
@@ -19,6 +20,7 @@ const MainPage = () => {
 	const [selectedCurrency2, setSelectedCurrency2] = useState("");
 	const [targetCurrency, setTargetCurrency] = useState("");
 	const [market, setMarket] = useState("");
+	const [marketData, setMarketData] = useState([]);
 	const [rate, setRate] = useState(2);
 	const [initialInput, setInitialInput] = useState("");
 
@@ -35,12 +37,24 @@ const MainPage = () => {
 	const getRate = async () => {
 		try {
 			const response = await axios.get(
-				`https://https://api.coingecko.com/api/v3/simple/price?ids=${selectedCurrency}&vs_currencies=eu,${targetCurrency}`
+				`https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${selectedCurrency},${targetCurrency}`
 			);
 
-			const data = response.data.selectedCurrency.targetCurrency;
+			const data = response.data.bitcoin.eth;
+			const data2 = response.data.bitcoin.btc;
 
-			//setRate(data);
+			setRate(data2 / data);
+		} catch (error) {
+			console.error();
+		}
+	};
+
+	const getMarketInfo = async () => {
+		try {
+			const response = await axios.get(
+				`https://api.coingecko.com/api/v3/coins/bitcoin/tickers`
+			);
+			const data = response.data;
 		} catch (error) {
 			console.error();
 		}
@@ -48,20 +62,15 @@ const MainPage = () => {
 
 	useEffect(() => {
 		getData();
+		//getMarketInfo();
 	}, []);
 
 	const handleChangeCurrency = (event) => {
 		setSelectedCurrency(event.target.value);
-		if (selectedCurrency && targetCurrency !== "") {
-			getRate();
-		}
 	};
 
 	const handleTargetCurrency = (event) => {
 		setTargetCurrency(event.target.value);
-		if (selectedCurrency && targetCurrency !== "") {
-			getRate();
-		}
 	};
 
 	const handleSelectedCurrency2 = (event) => {
@@ -137,6 +146,7 @@ const MainPage = () => {
 								value={initialInput * rate}
 							></TextField>
 						</Grid>
+						<Button onClick={() => getRate()}>Get Rate</Button>
 						{selectedCurrency} {targetCurrency} {rate} {initialInput}
 					</Grid>
 				</Box>
@@ -189,6 +199,9 @@ const MainPage = () => {
 					</Grid>
 				</Box>
 				{selectedCurrency2}
+				{marketData.map((item, pos) => {
+					return <Typography>ola</Typography>;
+				})}
 			</Container>
 		</div>
 	);
