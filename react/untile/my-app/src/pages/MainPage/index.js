@@ -31,6 +31,7 @@ const MainPage = () => {
 	const [selectedCurrency, setSelectedCurrency] = useState("");
 
 	const [targetCurrency, setTargetCurrency] = useState("");
+
 	const [market, setMarket] = useState("");
 	const [warning, setWarning] = useState("");
 	const [coins, setCoins] = useState("");
@@ -66,12 +67,24 @@ const MainPage = () => {
 		}
 	};
 
-	const getCoinInfo = async () => {
+	const getMarketInfo = async () => {
 		try {
 			const response = await axios.get(
-				`https://api.coingecko.com/api/v3/coins/list`
+				`https://api.coingecko.com/api/v3/coins/${selectedCoin}/tickers`
 			);
-			const data = response.data.slice(0, 20);
+			const data = response.data;
+			setMarket(data);
+		} catch (error) {
+			console.error();
+		}
+	};
+
+	const getCoins = async () => {
+		try {
+			const response = await axios.get(
+				`https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=100&page=1&sparkline=false`
+			);
+			const data = response.data;
 			setCoins(data);
 		} catch (error) {
 			console.error();
@@ -80,7 +93,8 @@ const MainPage = () => {
 
 	useEffect(() => {
 		getData();
-		getCoinInfo();
+		getMarketInfo();
+		getCoins();
 	}, []);
 
 	const handleChangeCurrency = (event) => {
@@ -267,7 +281,6 @@ const MainPage = () => {
 							<FormControl>
 								<InputLabel id="target market">Market</InputLabel>
 								<Select
-									disabled={handleDisableMarket()}
 									labelId="target market"
 									id="target market"
 									value={market}
@@ -275,19 +288,19 @@ const MainPage = () => {
 									onChange={handleMarket}
 									style={{ minWidth: "200px" }}
 								>
-									{supportedCurrencies.map((item, pos) => {
-										return (
-											<MenuItem key={pos} value={item}>
-												{item}
-											</MenuItem>
-										);
-									})}
+									{market.tickers &&
+										market.tickers.map((item, pos) => {
+											return (
+												<MenuItem value={item.market.name} key={pos}>
+													{item.market.name}
+												</MenuItem>
+											);
+										})}
 								</Select>
 							</FormControl>
 						</Grid>
 					</Grid>
 				</Box>
-				{selectedCoin}
 			</Container>
 		</div>
 	);
