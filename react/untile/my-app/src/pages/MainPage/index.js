@@ -67,10 +67,10 @@ const MainPage = () => {
 		}
 	};
 
-	const getMarketInfo = async () => {
+	const getMarketInfo = async (selectedCoin) => {
 		try {
 			const response = await axios.get(
-				`https://api.coingecko.com/api/v3/coins/cardano/tickers`
+				`https://api.coingecko.com/api/v3/coins/${selectedCoin.toLowerCase()}/tickers`
 			);
 			const data = response.data;
 			setMarket(data);
@@ -105,10 +105,14 @@ const MainPage = () => {
 
 	useEffect(() => {
 		getData();
-		getMarketInfo();
+
 		getCoins();
 		getTickers();
 	}, []);
+
+	useEffect(() => {
+		getMarketInfo(selectedCoin);
+	}, [selectedCoin]);
 
 	const handleChangeCurrency = (event) => {
 		setSelectedCurrency(event.target.value);
@@ -328,6 +332,7 @@ const MainPage = () => {
 									);
 								} else return null;
 							})}
+						{selectedCoin}
 					</Grid>
 				</Box>
 			</Container>
