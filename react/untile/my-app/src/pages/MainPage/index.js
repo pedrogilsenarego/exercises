@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import axios from "axios";
 
@@ -17,6 +17,8 @@ const MainPage = () => {
 	const [supportedCurrencies, setSupportedCurrencies] = useState([]);
 	const [selectedCurrency, setSelectedCurrency] = useState("");
 	const [targetCurrency, setTargetCurrency] = useState("");
+	const [rate, setRate] = useState(2);
+	const [initialInput, setInitialInput] = useState("");
 
 	const getData = async () => {
 		try {
@@ -28,16 +30,36 @@ const MainPage = () => {
 		}
 	};
 
+	const getRate = async () => {
+		try {
+			const response = await axios.get(
+				`https://https://api.coingecko.com/api/v3/simple/price?ids=${selectedCurrency}&vs_currencies=eu,${targetCurrency}`
+			);
+
+			const data = response.data.selectedCurrency.targetCurrency;
+
+			//setRate(data);
+		} catch (error) {
+			console.error();
+		}
+	};
+
 	useEffect(() => {
 		getData();
 	}, []);
 
 	const handleChangeCurrency = (event) => {
 		setSelectedCurrency(event.target.value);
+		if (selectedCurrency && targetCurrency !== "") {
+			getRate();
+		}
 	};
 
 	const handleTargetCurrency = (event) => {
 		setTargetCurrency(event.target.value);
+		if (selectedCurrency && targetCurrency !== "") {
+			getRate();
+		}
 	};
 
 	return (
@@ -70,7 +92,11 @@ const MainPage = () => {
 							</FormControl>
 						</Grid>
 						<Grid item xs={6}>
-							<TextField></TextField>
+							<TextField
+								placeholder="Initial value"
+								value={initialInput}
+								onChange={(e) => setInitialInput(e.target.value)}
+							></TextField>
 						</Grid>
 						<Grid item xs={6}>
 							<FormControl fullWidth>
@@ -93,9 +119,12 @@ const MainPage = () => {
 							</FormControl>
 						</Grid>
 						<Grid item xs={6}>
-							<TextField></TextField>
+							<TextField
+								placeholder="Final value"
+								value={initialInput * rate}
+							></TextField>
 						</Grid>
-						{selectedCurrency} {targetCurrency}
+						{selectedCurrency} {targetCurrency} {rate} {initialInput}
 					</Grid>
 				</Box>
 			</Container>
