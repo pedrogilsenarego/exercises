@@ -341,6 +341,7 @@ const MainPage = () => {
 								<Typography style={{ color: "darkBlue", fontSize: "15px" }}>
 									Result
 								</Typography>
+
 								<Grid
 									container
 									spacing={2}
@@ -351,7 +352,13 @@ const MainPage = () => {
 								>
 									{conversion.map((item, pos) => {
 										return [
-											<Grid item container style={{ display: "flex" }}>
+											<Grid
+												item
+												container
+												style={{
+													display: "flex"
+												}}
+											>
 												<Grid item xs={4}>
 													<Typography
 														style={{ color: "black", fontSize: "30px" }}
