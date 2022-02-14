@@ -33,6 +33,7 @@ const MainPage = () => {
 	const [targetCurrency, setTargetCurrency] = useState("");
 
 	const [market, setMarket] = useState("");
+	const [selectedMarket, setSelectedMarket] = useState("");
 	const [warning, setWarning] = useState("");
 	const [coins, setCoins] = useState("");
 	const [selectedCoin, setSelectedCoin] = useState("");
@@ -91,10 +92,10 @@ const MainPage = () => {
 		}
 	};
 
-	const getTickers = async () => {
+	const getTickers = async (selectedCoin) => {
 		try {
 			const response = await axios.get(
-				`https://api.coingecko.com/api/v3/coins/cardano/tickers`
+				`https://api.coingecko.com/api/v3/coins/${selectedCoin.toLowerCase()}/tickers`
 			);
 			const data = response.data;
 			setTickers(data);
@@ -112,6 +113,7 @@ const MainPage = () => {
 
 	useEffect(() => {
 		getMarketInfo(selectedCoin);
+		getTickers(selectedCoin);
 	}, [selectedCoin]);
 
 	const handleChangeCurrency = (event) => {
@@ -127,7 +129,7 @@ const MainPage = () => {
 	};
 
 	const handleMarket = (event) => {
-		setMarket(event.target.value);
+		setSelectedMarket(event.target.value);
 	};
 
 	const handleDoConversion = () => {
@@ -301,7 +303,7 @@ const MainPage = () => {
 									disabled={handleDisableMarket()}
 									labelId="target market"
 									id="target market"
-									value={market}
+									value={selectedMarket}
 									label="Market pretended"
 									onChange={handleMarket}
 									style={{ minWidth: "200px" }}
@@ -320,8 +322,9 @@ const MainPage = () => {
 					</Grid>
 					<Grid item xs={12} style={{ marginTop: "20px" }}>
 						{tickers.tickers &&
+							selectedMarket !== "" &&
 							tickers.tickers.map((item, pos) => {
-								if (item.market.name === "FMFW.io") {
+								if (item.market.name === selectedMarket) {
 									return (
 										<Typography key={pos}>
 											Ticker:{item.base} Last value:{item.last} Last Traded at:{" "}
@@ -332,7 +335,6 @@ const MainPage = () => {
 									);
 								} else return null;
 							})}
-						{selectedCoin}
 					</Grid>
 				</Box>
 			</Container>
