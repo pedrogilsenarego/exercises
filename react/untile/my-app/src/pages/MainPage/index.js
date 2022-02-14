@@ -12,6 +12,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Divider from "@mui/material/Divider";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import Arrow from "../../assets/arrow-to.svg";
 
 import {
 	addConversionStart,
@@ -191,7 +192,7 @@ const MainPage = () => {
 							style={{ cursor: "pointer", fontWeight: "600", fontSize: "20px" }}
 						>
 							{" "}
-							Crypto Calculator
+							CRYPTO CALCULATOR
 						</Typography>
 					</Grid>
 					<Grid
@@ -224,29 +225,39 @@ const MainPage = () => {
 						style={{
 							backgroundColor: "lightGrey",
 							marginTop: "5vh",
-							minHeight: "70vh"
+							minHeight: "70vh",
+							paddingBottom: "200px"
 						}}
 					>
 						<Typography style={{ color: "darkBlue" }} variant="h3">
-							Crypto Calculator
+							CRYPTO CALCULATOR
 						</Typography>
 
 						<Grid container spacing={2} style={{ marginTop: "5vh" }}>
 							<Grid item container xs={12}>
 								<Grid item xs={6}>
 									<Typography
-										style={{ color: "darkBlue", fontSize: "15px" }}
+										style={{
+											color: "darkBlue",
+											fontSize: "15px",
+											fontWeight: "600"
+										}}
 										variant="h3"
 									>
-										From:
+										FROM:
 									</Typography>
 								</Grid>
+
 								<Grid item xs={6}>
 									<Typography
-										style={{ color: "darkBlue", fontSize: "15px" }}
+										style={{
+											color: "darkBlue",
+											fontSize: "15px",
+											fontWeight: "600"
+										}}
 										variant="h3"
 									>
-										To:
+										TO:
 									</Typography>
 								</Grid>
 								<Container>
@@ -332,14 +343,22 @@ const MainPage = () => {
 													Clear conversions
 												</Button>
 											</ButtonGroup>
-											{warning}
 										</Grid>
 									</Grid>
 								</Container>
 							</Grid>
 							<Grid item xs={12}>
-								<Typography style={{ color: "darkBlue", fontSize: "15px" }}>
-									Result
+								<Typography style={{ color: "red" }}>{warning}</Typography>
+							</Grid>
+							<Grid item xs={12}>
+								<Typography
+									style={{
+										color: "darkBlue",
+										fontSize: "25px",
+										fontWeight: "600"
+									}}
+								>
+									RESULT
 								</Typography>
 
 								<Grid
@@ -348,36 +367,54 @@ const MainPage = () => {
 									direction="column"
 									alignItems="center"
 									justifyContent="center"
-									style={{ marginTop: "20px" }}
+									style={{
+										marginTop: "20px"
+									}}
 								>
 									{conversion.map((item, pos) => {
 										return [
 											<Grid
 												item
 												container
+												alignItems="center"
 												style={{
 													display: "flex"
 												}}
 											>
-												<Grid item xs={4}>
+												<Grid item xs={3.5}></Grid>
+												<Grid item xs={2}>
 													<Typography
-														style={{ color: "black", fontSize: "30px" }}
+														style={{
+															color: pos === 0 ? "black" : "grey",
+															fontSize: pos !== 0 ? "15px" : "30px"
+														}}
 													>
-														{item.initialValue}{" "}
+														{parseInt(item.initialValue).toFixed(1)}{" "}
 														{item.initialCurrency.toUpperCase()}
 													</Typography>
 												</Grid>
-												<Grid item xs={4}>
-													<Typography>is worth </Typography>
-												</Grid>
-												<Grid item xs={4}>
+												<Grid item xs={1}>
 													<Typography
-														style={{ color: "black", fontSize: "30px" }}
+														style={{
+															color: pos === 0 ? "black" : "grey",
+															fontSize: pos === 0 ? "15px" : "10px"
+														}}
 													>
-														{item.finalValue}{" "}
+														is worth{" "}
+													</Typography>
+												</Grid>
+												<Grid item xs={2}>
+													<Typography
+														style={{
+															fontSize: pos !== 0 ? "15px" : "30px",
+															color: pos === 0 ? "black" : "grey"
+														}}
+													>
+														{parseInt(item.finalValue).toFixed(1)}{" "}
 														{item.secondaryCurrency.toUpperCase()}
 													</Typography>
 												</Grid>
+												<Grid item xs={3.5}></Grid>
 											</Grid>
 										];
 									})}
@@ -390,29 +427,41 @@ const MainPage = () => {
 					<Box
 						style={{
 							backgroundColor: "lightGrey",
-							marginTop: "5vh",
-							minHeight: "50vh"
+
+							minHeight: "50vh",
+							paddingBottom: "200px"
 						}}
 					>
-						<Typography style={{ color: "darkBlue" }} variant="h3">
-							Tickers
+						<Typography
+							style={{ color: "darkBlue", marginTop: "5vh" }}
+							variant="h3"
+						>
+							TICKERS
 						</Typography>
 						<Grid container spacing={2} style={{ marginTop: "10vh" }}>
 							{" "}
 							<Grid item xs={6}>
 								<Typography
-									style={{ color: "darkBlue", fontSize: "15px" }}
+									style={{
+										color: "darkBlue",
+										fontSize: "15px",
+										fontWeight: "600"
+									}}
 									variant="h3"
 								>
-									Coin:
+									COIN:
 								</Typography>
 							</Grid>
 							<Grid item xs={6}>
 								<Typography
-									style={{ color: "darkBlue", fontSize: "15px" }}
+									style={{
+										color: "darkBlue",
+										fontSize: "15px",
+										fontWeight: "600"
+									}}
 									variant="h3"
 								>
-									Market:
+									MARKET:
 								</Typography>
 							</Grid>
 							<Grid item xs={6}>
@@ -459,41 +508,50 @@ const MainPage = () => {
 								</FormControl>
 							</Grid>
 						</Grid>
-						<Grid item xs={12} style={{ marginTop: "20px" }}>
-							{tickers.tickers &&
-								selectedMarket !== "" &&
-								tickers.tickers.map((item, pos) => {
-									if (item.market.name === selectedMarket) {
-										return (
-											<Box
-												style={{
-													backgroundColor: "white",
-													borderRadius: "2px"
-												}}
-											>
-												<Grid key={pos} container style={{ marginTop: "10px" }}>
-													<Grid item xs={6}>
-														<Typography>
-															Ticker:{item.base}{" "}
+						<Container maxWidth={"md"} style={{ marginTop: "10vh" }}>
+							<Grid item xs={12} style={{ marginTop: "20px" }}>
+								{tickers.tickers &&
+									selectedMarket !== "" &&
+									tickers.tickers.map((item, pos) => {
+										if (item.market.name === selectedMarket) {
+											return (
+												<Box
+													style={{
+														backgroundColor: "white",
+														borderRadius: "4px",
+														boxShadow: "4px 5px 5px grey",
+														padding: "10px",
+														marginTop: "10px"
+													}}
+												>
+													<Grid
+														key={pos}
+														container
+														style={{ marginTop: "10px" }}
+													>
+														<Grid item xs={6}>
+															<Typography style={{ fontWeight: "600" }}>
+																{item.base}/{item.target}{" "}
+																<Typography style={{ fontSize: "12px" }}>
+																	Last value:{item.last} Last Traded at:{" "}
+																	{item.last_traded_at}
+																</Typography>{" "}
+															</Typography>
+														</Grid>
+														<Grid item xs={6}>
+															<Typography>View More</Typography>
 															<Typography>
-																Last value:{item.last} Last Traded at:{" "}
-																{item.last_traded_at}
-															</Typography>{" "}
-														</Typography>
+																Market: {item.market.name} Market volume:
+																{item.volume}
+															</Typography>
+														</Grid>
 													</Grid>
-													<Grid item xs={6}>
-														<Typography>View More</Typography>
-														<Typography>
-															Market: {item.market.name} Market volume:
-															{item.volume}
-														</Typography>
-													</Grid>
-												</Grid>
-											</Box>
-										);
-									} else return null;
-								})}
-						</Grid>
+												</Box>
+											);
+										} else return null;
+									})}
+							</Grid>
+						</Container>
 					</Box>
 				)}
 			</Container>
