@@ -52,7 +52,7 @@ const MainPage = () => {
 		}
 	};
 
-	const getRate = async () => {
+	const getRate = async (selectedCurrency, targetCurrency) => {
 		try {
 			const response = await axios.get(
 				`https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${selectedCurrency},${targetCurrency}`
@@ -115,6 +115,10 @@ const MainPage = () => {
 		getTickers(selectedCoin);
 	}, [selectedCoin]);
 
+	useEffect(() => {
+		getRate(selectedCurrency, targetCurrency);
+	}, [selectedCurrency, targetCurrency]);
+
 	const handleChangeCurrency = (event) => {
 		setSelectedCurrency(event.target.value);
 	};
@@ -140,11 +144,8 @@ const MainPage = () => {
 			setWarning("use only numbers to convert");
 			return;
 		}
-		getRate();
-		setWarning("");
-	};
 
-	const handleSaveConversion = () => {
+		setWarning("");
 		const configConversion = {
 			initialCurrency: selectedCurrency,
 			secondaryCurrency: targetCurrency,
@@ -156,6 +157,8 @@ const MainPage = () => {
 		initialState.push(configConversion);
 		dispatch(addConversionStart(initialState));
 	};
+
+	const handleSaveConversion = () => {};
 
 	const handleClearConversions = () => {
 		dispatch(clearConversionsStart());
@@ -219,11 +222,37 @@ const MainPage = () => {
 					/>
 				</Grid>
 				{currentPage === 0 && (
-					<Box style={{ backgroundColor: "lightGrey", marginTop: "10vh" }}>
-						<Typography>Convert here any currency</Typography>
-						<Grid container spacing={2} style={{ marginTop: "10vh" }}>
-							<Grid item container xs={6}>
+					<Box style={{ backgroundColor: "lightGrey", marginTop: "5vh" }}>
+						<Typography style={{ color: "darkBlue" }} variant="h3">
+							Crypto Calculator
+						</Typography>
+
+						<Grid container spacing={2} style={{ marginTop: "5vh" }}>
+							<Grid item container xs={12}>
 								<Grid item xs={6}>
+									<Typography
+										style={{ color: "darkBlue", fontSize: "15px" }}
+										variant="h3"
+									>
+										From:
+									</Typography>
+								</Grid>
+								<Grid item xs={6}>
+									<Typography
+										style={{ color: "darkBlue", fontSize: "15px" }}
+										variant="h3"
+									>
+										To:
+									</Typography>
+								</Grid>
+								<Grid item xs={4} style={{ marginTop: "20px" }}>
+									<TextField
+										placeholder="Initial value"
+										value={initialInput}
+										onChange={(e) => setInitialInput(e.target.value)}
+									></TextField>
+								</Grid>
+								<Grid item xs={4} style={{ marginTop: "20px" }}>
 									<FormControl>
 										<InputLabel id="initial currency">Currency</InputLabel>
 										<Select
@@ -244,14 +273,8 @@ const MainPage = () => {
 										</Select>
 									</FormControl>
 								</Grid>
-								<Grid item xs={6}>
-									<TextField
-										placeholder="Initial value"
-										value={initialInput}
-										onChange={(e) => setInitialInput(e.target.value)}
-									></TextField>
-								</Grid>
-								<Grid item xs={6} style={{ marginTop: "20px" }}>
+
+								<Grid item xs={4} style={{ marginTop: "20px" }}>
 									<FormControl>
 										<InputLabel id="target currency">Currency</InputLabel>
 										<Select
@@ -272,13 +295,7 @@ const MainPage = () => {
 										</Select>
 									</FormControl>
 								</Grid>
-								<Grid item xs={6} style={{ marginTop: "20px" }}>
-									<TextField
-										disabled={true}
-										placeholder="Final value"
-										value={initialInput * rate}
-									></TextField>
-								</Grid>
+
 								<Grid
 									item
 									xs={12}
@@ -298,19 +315,25 @@ const MainPage = () => {
 									{warning}
 								</Grid>
 							</Grid>
-							<Grid item xs={6}>
-								<Typography>List of Conversions done</Typography>
-								<div style={{ marginTop: "20px" }}>
-									{conversion.map((item, pos) => {
-										return (
-											<Typography key={pos}>
-												{pos + 1}: {item.initialValue} of {item.initialCurrency}{" "}
-												converts to {item.finalValue} of{" "}
+							<Grid item xs={12}>
+								<Typography style={{ color: "darkBlue", fontSize: "15px" }}>
+									Result
+								</Typography>
+
+								{conversion.map((item, pos) => {
+									return [
+										<Container style={{ display: "flex" }}>
+											<Typography style={{ color: "black", fontSize: "30px" }}>
+												{item.initialValue} {item.initialCurrency}
+											</Typography>
+											<Typography>is worth </Typography>
+											<Typography style={{ color: "black", fontSize: "30px" }}>
+												{item.finalValue}
 												{item.secondaryCurrency}
 											</Typography>
-										);
-									})}
-								</div>
+										</Container>
+									];
+								})}
 							</Grid>
 						</Grid>
 					</Box>
