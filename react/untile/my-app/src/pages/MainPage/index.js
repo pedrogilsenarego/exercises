@@ -158,8 +158,6 @@ const MainPage = () => {
 		dispatch(addConversionStart(initialState));
 	};
 
-	const handleSaveConversion = () => {};
-
 	const handleClearConversions = () => {
 		dispatch(clearConversionsStart());
 	};
@@ -183,7 +181,7 @@ const MainPage = () => {
 						item
 						style={{
 							display: "flex",
-							color: "darkBlue"
+							color: currentPage === 0 ? "darkBlue" : "grey"
 						}}
 					>
 						<Typography
@@ -200,7 +198,7 @@ const MainPage = () => {
 						item
 						style={{
 							display: "flex",
-							color: "darkBlue"
+							color: currentPage === 1 ? "darkBlue" : "grey"
 						}}
 					>
 						<Typography
@@ -222,7 +220,13 @@ const MainPage = () => {
 					/>
 				</Grid>
 				{currentPage === 0 && (
-					<Box style={{ backgroundColor: "lightGrey", marginTop: "5vh" }}>
+					<Box
+						style={{
+							backgroundColor: "lightGrey",
+							marginTop: "5vh",
+							minHeight: "70vh"
+						}}
+					>
 						<Typography style={{ color: "darkBlue" }} variant="h3">
 							Crypto Calculator
 						</Typography>
@@ -245,95 +249,132 @@ const MainPage = () => {
 										To:
 									</Typography>
 								</Grid>
-								<Grid item xs={4} style={{ marginTop: "20px" }}>
-									<TextField
-										placeholder="Initial value"
-										value={initialInput}
-										onChange={(e) => setInitialInput(e.target.value)}
-									></TextField>
-								</Grid>
-								<Grid item xs={4} style={{ marginTop: "20px" }}>
-									<FormControl>
-										<InputLabel id="initial currency">Currency</InputLabel>
-										<Select
-											labelId="initial currency"
-											id="initial currency"
-											value={selectedCurrency}
-											label="Currency pretended"
-											onChange={handleChangeCurrency}
-											style={{ minWidth: "200px" }}
-										>
-											{supportedCurrencies.map((item, pos) => {
-												return (
-													<MenuItem key={pos} value={item}>
-														{item}
-													</MenuItem>
-												);
-											})}
-										</Select>
-									</FormControl>
-								</Grid>
+								<Container>
+									<Grid container>
+										<Grid item xs={3} style={{ marginTop: "20px" }}>
+											<TextField
+												size="small"
+												placeholder="Initial value"
+												value={initialInput}
+												onChange={(e) => setInitialInput(e.target.value)}
+											></TextField>
+										</Grid>
+										<Grid item xs={3} style={{ marginTop: "20px" }}>
+											<FormControl>
+												<InputLabel id="initial currency">Currency</InputLabel>
+												<Select
+													size="small"
+													labelId="initial currency"
+													id="initial currency"
+													value={selectedCurrency}
+													label="Currency pretended"
+													onChange={handleChangeCurrency}
+													style={{ minWidth: "200px" }}
+												>
+													{supportedCurrencies.map((item, pos) => {
+														return (
+															<MenuItem key={pos} value={item}>
+																{item}
+															</MenuItem>
+														);
+													})}
+												</Select>
+											</FormControl>
+										</Grid>
 
-								<Grid item xs={4} style={{ marginTop: "20px" }}>
-									<FormControl>
-										<InputLabel id="target currency">Currency</InputLabel>
-										<Select
-											labelId="target currency"
-											id="target currency"
-											value={targetCurrency}
-											label="Currency pretended"
-											onChange={handleTargetCurrency}
-											style={{ minWidth: "200px" }}
+										<Grid item xs={3} style={{ marginTop: "20px" }}>
+											<FormControl>
+												<InputLabel id="target currency">Currency</InputLabel>
+												<Select
+													size="small"
+													labelId="target currency"
+													id="target currency"
+													value={targetCurrency}
+													label="Currency pretended"
+													onChange={handleTargetCurrency}
+													style={{ minWidth: "200px" }}
+												>
+													{supportedCurrencies.map((item, pos) => {
+														return (
+															<MenuItem key={pos} value={item}>
+																{item}
+															</MenuItem>
+														);
+													})}
+												</Select>
+											</FormControl>
+										</Grid>
+										<Grid
+											item
+											xs={3}
+											style={{ marginTop: "20px", marginBottom: "20px" }}
 										>
-											{supportedCurrencies.map((item, pos) => {
-												return (
-													<MenuItem key={pos} value={item}>
-														{item}
-													</MenuItem>
-												);
-											})}
-										</Select>
-									</FormControl>
-								</Grid>
+											<ButtonGroup>
+												<Button
+													size="small"
+													style={{
+														color: "white",
+														backgroundColor: "darkBlue"
+													}}
+													onClick={() => handleDoConversion()}
+												>
+													Convert
+												</Button>
 
-								<Grid
-									item
-									xs={12}
-									style={{ marginTop: "20px", marginBottom: "20px" }}
-								>
-									<ButtonGroup>
-										<Button onClick={() => handleDoConversion()}>
-											Convert
-										</Button>
-										<Button onClick={() => handleSaveConversion()}>
-											Save Conversion
-										</Button>
-										<Button onClick={() => handleClearConversions()}>
-											Clear conversions
-										</Button>
-									</ButtonGroup>
-									{warning}
-								</Grid>
+												<Button
+													size="small"
+													style={{
+														color: "white",
+														backgroundColor: "darkBlue"
+													}}
+													onClick={() => handleClearConversions()}
+												>
+													Clear conversions
+												</Button>
+											</ButtonGroup>
+											{warning}
+										</Grid>
+									</Grid>
+								</Container>
 							</Grid>
 							<Grid item xs={12}>
 								<Typography style={{ color: "darkBlue", fontSize: "15px" }}>
 									Result
 								</Typography>
-
-								{conversion.map((item, pos) => {
-									return [
-										<Container style={{ display: "flex" }}>
-											<Typography style={{ color: "black", fontSize: "30px" }}>
-												{item.initialValue} {item.initialCurrency}
-											</Typography>
-											<Typography>is worth </Typography>
-											<Typography style={{ color: "black", fontSize: "30px" }}>
-												{item.finalValue}
-												{item.secondaryCurrency}
-											</Typography>
-										</Container>
-									];
-								})}
+								<Grid
+									container
+									spacing={2}
+									direction="column"
+									alignItems="center"
+									justifyContent="center"
+									style={{ marginTop: "20px" }}
+								>
+									{conversion.map((item, pos) => {
+										return [
+											<Grid item container style={{ display: "flex" }}>
+												<Grid item xs={4}>
+													<Typography
+														style={{ color: "black", fontSize: "30px" }}
+													>
+														{item.initialValue}{" "}
+														{item.initialCurrency.toUpperCase()}
+													</Typography>
+												</Grid>
+												<Grid item xs={4}>
+													<Typography>is worth </Typography>
+												</Grid>
+												<Grid item xs={4}>
+													<Typography
+														style={{ color: "black", fontSize: "30px" }}
+													>
+														{item.finalValue}{" "}
+														{item.secondaryCurrency.toUpperCase()}
+													</Typography>
+												</Grid>
+											</Grid>
+										];
+									})}
+								</Grid>
 							</Grid>
 						</Grid>
 					</Box>
@@ -342,13 +383,31 @@ const MainPage = () => {
 					<Box
 						style={{
 							backgroundColor: "lightGrey",
-							marginTop: "10vh",
+							marginTop: "5vh",
 							minHeight: "50vh"
 						}}
 					>
-						<Typography>Explore here the market</Typography>
+						<Typography style={{ color: "darkBlue" }} variant="h3">
+							Tickers
+						</Typography>
 						<Grid container spacing={2} style={{ marginTop: "10vh" }}>
 							{" "}
+							<Grid item xs={6}>
+								<Typography
+									style={{ color: "darkBlue", fontSize: "15px" }}
+									variant="h3"
+								>
+									Coin:
+								</Typography>
+							</Grid>
+							<Grid item xs={6}>
+								<Typography
+									style={{ color: "darkBlue", fontSize: "15px" }}
+									variant="h3"
+								>
+									Market:
+								</Typography>
+							</Grid>
 							<Grid item xs={6}>
 								<FormControl>
 									<InputLabel id="target coins">Coins</InputLabel>
@@ -399,12 +458,31 @@ const MainPage = () => {
 								tickers.tickers.map((item, pos) => {
 									if (item.market.name === selectedMarket) {
 										return (
-											<Typography key={pos}>
-												Ticker:{item.base} Last value:{item.last} Last Traded
-												at: {item.last_traded_at} Market: {item.market.name}{" "}
-												Market volume:
-												{item.volume}
-											</Typography>
+											<Box
+												style={{
+													backgroundColor: "white",
+													borderRadius: "2px"
+												}}
+											>
+												<Grid key={pos} container style={{ marginTop: "10px" }}>
+													<Grid item xs={6}>
+														<Typography>
+															Ticker:{item.base}{" "}
+															<Typography>
+																Last value:{item.last} Last Traded at:{" "}
+																{item.last_traded_at}
+															</Typography>{" "}
+														</Typography>
+													</Grid>
+													<Grid item xs={6}>
+														<Typography>View More</Typography>
+														<Typography>
+															Market: {item.market.name} Market volume:
+															{item.volume}
+														</Typography>
+													</Grid>
+												</Grid>
+											</Box>
 										);
 									} else return null;
 								})}
