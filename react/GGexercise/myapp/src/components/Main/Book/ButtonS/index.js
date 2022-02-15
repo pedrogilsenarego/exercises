@@ -9,7 +9,7 @@ const ButtonS = ({ setMoreInfo, title }) => {
 				size="small"
 				onClick={() => setMoreInfo(true)}
 			>
-				{title}
+				More information
 			</Button>
 		</div>
 	);

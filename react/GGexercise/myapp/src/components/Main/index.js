@@ -5,11 +5,11 @@ import {
 	setPageStart
 } from "../../redux/Books/books.actions";
 import Book from "./Book";
+import Welcome from "./Welcome/Welcome";
 
-import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+
 import Pagination from "@mui/material/Pagination";
 import { makeStyles } from "@mui/styles";
 
@@ -66,7 +66,7 @@ const Main = () => {
 
 	return (
 		<div style={{ marginTop: "10px" }}>
-			Get Ground exercise
+			<Welcome />
 			<Container style={{ marginTop: "10vh" }}>
 				<Pagination
 					className={classes.root}

@@ -8,7 +8,7 @@ import ButtonS from "./ButtonS";
 
 const Book = ({ item, pos }) => {
 	const [moreInfo, setMoreInfo] = useState(false);
-	const configButton = { setMoreInfo, title: "More information" };
+	const configButton = { setMoreInfo, title: "More Information" };
 	return (
 		<div>
 			<Paper style={{ backgroundColor: "lightGrey", marginTop: "5px" }}>
