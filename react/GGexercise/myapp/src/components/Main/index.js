@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
 	addFetchBooksStart,
@@ -26,8 +26,6 @@ const mapState = (state) => ({
 });
 
 const Main = () => {
-	const [filter, setFilter] = useState([]);
-
 	const dispatch = useDispatch();
 	const { books, page } = useSelector(mapState);
 	const classes = useStyles();
@@ -56,7 +54,7 @@ const Main = () => {
 		() => {
 			getData();
 		},
-		//es-lint disable next line
+		// eslint-disable-next-line
 		[page]
 	);
 
