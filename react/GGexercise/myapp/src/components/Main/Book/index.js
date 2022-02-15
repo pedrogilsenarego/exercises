@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 const Book = ({ item, pos }) => {
-	const [moreInfo, setMoreInfo] = useState(false);
 	return (
 		<div>
 			<Paper style={{ backgroundColor: "lightGrey", marginTop: "5px" }}>
@@ -14,23 +13,17 @@ const Book = ({ item, pos }) => {
 				<Typography variant="subtitle2">
 					<span style={{ fontSize: 13 }}>written by</span> {item.book_author}
 				</Typography>
-				{!moreInfo && (
-					<Button size="small" onClick={() => setMoreInfo(true)}>
-						More information
-					</Button>
-				)}
-				{moreInfo && (
-					<Typography>
-						{`Published at ${
-							item.book_publication_year && item.book_publication_year
-						} in
+
+				<Typography>
+					{`Published at ${
+						item.book_publication_year && item.book_publication_year
+					} in
           ${item.book_publication_city && item.book_publication_city + ","}
           ${item.book_publication_country && item.book_publication_country}.
 
           `}
-						&nbsp; contains {item.book_pages} pages
-					</Typography>
-				)}
+					&nbsp; contains {item.book_pages} pages
+				</Typography>
 			</Paper>
 		</div>
 	);

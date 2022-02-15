@@ -11,6 +11,14 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles({
+	root: {
+		display: "flex",
+		justifyContent: "center"
+	}
+});
 
 const mapState = (state) => ({
 	books: state.booksData.books,
@@ -22,6 +30,7 @@ const Main = () => {
 
 	const dispatch = useDispatch();
 	const { books, page } = useSelector(mapState);
+	const classes = useStyles();
 
 	const getData = (filters = []) => {
 		return fetch("http://nyx.vima.ekt.gr:3000/api/books/", {
@@ -56,10 +65,11 @@ const Main = () => {
 	};
 
 	return (
-		<div>
-			Teste
+		<div style={{ marginTop: "10px" }}>
+			Get Ground exercise
 			<Container style={{ marginTop: "10vh" }}>
 				<Pagination
+					className={classes.root}
 					shape="rounded"
 					count={parseInt(books.count / 20) + 1}
 					page={Number(page) || 1}

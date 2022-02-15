@@ -3,6 +3,7 @@
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@mui/material": "^5.4.1",
+    "@mui/styles": "^5.4.1",
     "react-redux": "^7.2.6",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
