@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addFetchBooksStart } from "../../redux/Books/books.actions";
+import {
+	addFetchBooksStart,
+	setPageStart
+} from "../../redux/Books/books.actions";
 import Book from "./Book";
-import PagesIndex from "./PagesIndex";
 
 import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Pagination from "@mui/material/Pagination";
 
 const mapState = (state) => ({
-	books: state.booksData.books
+	books: state.booksData.books,
+	page: state.booksData.page
 });
 
 const Main = () => {
 	const [filter, setFilter] = useState([]);
-	const [page, setPage] = useState(1);
 
 	const dispatch = useDispatch();
-	const { books } = useSelector(mapState);
+	const { books, page } = useSelector(mapState);
 
 	const getData = (filters = []) => {
 		return fetch("http://nyx.vima.ekt.gr:3000/api/books/", {
@@ -28,7 +31,7 @@ const Main = () => {
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				page: 1,
+				page: page,
 				itemsPerPage: 20,
 				filters: filters === "delete" ? [] : filters
 			})
@@ -45,14 +48,23 @@ const Main = () => {
 			getData();
 		},
 		//es-lint disable next line
-		[]
+		[page]
 	);
+
+	const handlePaginationChange = (event, value) => {
+		dispatch(setPageStart(value));
+	};
 
 	return (
 		<div>
 			Teste
 			<Container style={{ marginTop: "10vh" }}>
-				<PagesIndex />
+				<Pagination
+					shape="rounded"
+					count={parseInt(books.count / 20) + 1}
+					page={Number(page) || 1}
+					onChange={handlePaginationChange}
+				/>
 				<Typography style={{ marginTop: "5vh" }}>List of Books</Typography>
 				<div style={{ marginTop: "20px" }}>
 					{books.books.map((item, pos) => {

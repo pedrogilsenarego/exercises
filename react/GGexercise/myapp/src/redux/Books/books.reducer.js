@@ -1,7 +1,8 @@
 import booksTypes from "./books.types";
 
 const INITIAL_STATE = {
-	books: { books: null, count: null }
+	books: { books: null, count: null },
+	page: 1
 };
 
 const booksReducer = (state = INITIAL_STATE, action) => {
@@ -10,6 +11,11 @@ const booksReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				books: action.payload
+			};
+		case booksTypes.SET_PAGE:
+			return {
+				...state,
+				page: action.payload
 			};
 
 		default:
