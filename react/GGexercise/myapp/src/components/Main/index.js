@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addFetchBooksStart } from "../../redux/Books/books.actions";
+import Book from "./Book";
+import PagesIndex from "./PagesIndex";
 
 import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 
 const mapState = (state) => ({
 	books: state.booksData.books
@@ -13,6 +16,7 @@ const mapState = (state) => ({
 const Main = () => {
 	const [filter, setFilter] = useState([]);
 	const [page, setPage] = useState(1);
+
 	const dispatch = useDispatch();
 	const { books } = useSelector(mapState);
 
@@ -48,16 +52,14 @@ const Main = () => {
 		<div>
 			Teste
 			<Container style={{ marginTop: "10vh" }}>
-				<Typography>List of Books</Typography>
+				<PagesIndex />
+				<Typography style={{ marginTop: "5vh" }}>List of Books</Typography>
 				<div style={{ marginTop: "20px" }}>
 					{books.books.map((item, pos) => {
+						const configBook = { item, pos };
 						return (
 							<div key={pos}>
-								<Paper
-									style={{ backgroundColor: "lightGrey", marginTop: "5px" }}
-								>
-									<Typography variant="h6">{item.book_title}</Typography>
-								</Paper>
+								<Book {...configBook} />
 							</div>
 						);
 					})}
