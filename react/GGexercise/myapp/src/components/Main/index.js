@@ -30,7 +30,7 @@ const Main = () => {
 	const { books, page } = useSelector(mapState);
 	const classes = useStyles();
 
-	const getData = (filters = []) => {
+	const getData = () => {
 		return fetch("http://nyx.vima.ekt.gr:3000/api/books/", {
 			method: "post",
 			headers: {
@@ -40,7 +40,7 @@ const Main = () => {
 			body: JSON.stringify({
 				page: page,
 				itemsPerPage: 20,
-				filters: filters === "delete" ? [] : filters
+				filters: []
 			})
 		})
 			.then((response) => response.json())
